@@ -1,7 +1,7 @@
 """배포할 때 웹 서버가 이 프로젝트를 부르는 입구 (WSGI).
 
 지금처럼 `python manage.py runserver`로 연습할 때는 이 파일을 직접 쓰지 않는다.
-나중에 gunicorn 같은 서버에 올릴 때, 서버가 application 변수를 찾아 요청을 넘긴다.
+Vercel은 이 파일의 application 변수를 찾아서 방문자 요청을 Django에 넘긴다.
 WSGI는 한 번에 하나의 요청을 처리하는 전통적인 파이썬 웹 규격이다.
 """
 
