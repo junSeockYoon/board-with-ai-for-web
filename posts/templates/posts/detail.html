@@ -1,0 +1,33 @@
+{% extends "posts/base.html" %}
+{% comment %}
+글 하나. views.post_detail이 Post 행 하나를 넘긴다.
+없는 번호는 이 템플릿까지 오지 않고, 뷰에서 404로 끝난다.
+
+linebreaksbr 필터는 본문의 줄바꿈(\n)을 <br> 태그로 바꾼다.
+필터는 {{ 값|필터이름 }}처럼 파이프 뒤에 붙인다.
+줄바꿈만 태그로 바뀌고, 나머지 글자는 그대로 이스케이프되므로
+본문에 HTML을 적어도 코드로 실행되지 않는다.
+{% endcomment %}
+
+{# 브라우저 탭 제목을 글 제목으로 바꾼다. #}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ post.title }}</h2>
+<p class="meta">{{ post.author }} · {{ post.created_at|date:"Y-m-d H:i" }}</p>
+{# summary는 본문을 한 문장으로 줄인 결과다. 호출에 실패하면 summary_error만 나온다. #}
+{% if summary %}
+<p class="meta">요약: {{ summary }}</p>
+{% endif %}
+{% if summary_error %}
+<p class="meta">{{ summary_error }}</p>
+{% endif %}
+<div class="content">{{ post.content|linebreaksbr }}</div>
+<p class="actions">
+  <a href="{% url 'post_list' %}">목록으로</a>
+  {# 수정은 이 글의 번호로 /posts/번호/edit/ 주소를 만든다. #}
+  <a href="{% url 'post_update' post.id %}">수정</a>
+  {# 삭제는 바로 지우지 않고 확인 화면으로 보낸다. #}
+  <a href="{% url 'post_delete' post.id %}">삭제</a>
+</p>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% comment %}
+모든 화면의 공통 뼈대.
+
+list.html, detail.html, form.html은 이 파일을 extends(상속)한다.
+자식 템플릿이 {% block 이름 %}으로 같은 이름의 칸만 갈아 끼운다.
+- title 블록: 브라우저 탭에 보이는 제목
+- content 블록: 흰 상자 안의 본문
+
+{% url '별명' %}은 urls.py에 적은 name으로 실제 주소를 만든다.
+주소 문자열이 바뀌어도 템플릿을 고치지 않아도 된다.
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  {# 자식이 title 블록을 안 채우면 "게시판"이 기본값이다. #}
+  <title>{% block title %}게시판{% endblock %}</title>
+  <style>
+    /* 페이지 전체 배경과 글꼴. margin: 0은 브라우저 기본 여백을 없앤다. */
+    body {
+      margin: 0;
+      font-family: "Malgun Gothic", sans-serif;
+      background: #f4f5f7;
+      color: #222;
+    }
+    /* 머리글과 본문을 가운데 880px 안에 모은다. */
+    header, main {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+    /* 왼쪽에는 게시판 제목, 오른쪽에는 글쓰기 버튼이 오도록 가로로 배치한다. */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0 8px;
+    }
+    header a {
+      color: inherit;
+      text-decoration: none;
+    }
+    header .button {
+      margin-top: 0;
+    }
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    /* 본문 흰 상자. */
+    main {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 24px;
+    }
+    a {
+      color: #1d4e89;
+    }
+    /* 목록 표. border-collapse는 칸 사이 이중 선을 한 줄로 합친다. */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 12px 8px;
+      border-bottom: 1px solid #e5e5e5;
+      text-align: left;
+    }
+    th {
+      background: #fafafa;
+    }
+    /* 번호와 날짜 칸은 너비를 고정해 제목 칸이 넓게 남게 한다. */
+    .number, .date {
+      width: 120px;
+      color: #555;
+    }
+    .actions {
+      margin-top: 20px;
+    }
+    /* 목록, 수정, 삭제 링크가 붙지 않게 사이를 띄운다. */
+    .actions a {
+      margin-right: 16px;
+    }
+    /* 글쓰기 폼의 라벨은 한 줄씩 차지하게 한다. */
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: 700;
+    }
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 6px;
+      padding: 8px;
+      font: inherit;
+    }
+    textarea {
+      min-height: 180px;
+    }
+    /* button 태그와 class="button"인 링크를 같은 파란 버튼처럼 보이게 한다. */
+    button, .button {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 16px;
+      border: 0;
+      background: #1d4e89;
+      color: #fff;
+      text-decoration: none;
+      font: inherit;
+      cursor: pointer;
+    }
+    .errors {
+      margin: 0;
+      padding-left: 20px;
+      color: #a12622;
+    }
+    .meta {
+      color: #555;
+    }
+    .content {
+      white-space: normal;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    {# 제목을 누르면 목록(/)으로 돌아간다. #}
+    <h1><a href="{% url 'post_list' %}">게시판</a></h1>
+    <a class="button" href="{% url 'post_create' %}">글쓰기</a>
+  </header>
+  <main>
+    {# 자식 템플릿의 content 블록이 이 자리에 들어온다. #}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

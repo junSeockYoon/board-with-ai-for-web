@@ -1,0 +1,38 @@
+{% extends "posts/base.html" %}
+{% comment %}
+글 목록. views.post_list가 이 템플릿에 posts(Post 행의 목록)를 넘긴다.
+
+extends는 이 파일의 첫 태그여야 한다. base.html의 뼈대를 가져오고, 아래 block만 덮어쓴다.
+{{ 변수 }}는 그 값을 글자로 출력한다. HTML 특수문자는 자동으로 이스케이프된다.
+for는 파이썬의 for와 같다. empty는 리스트가 비었을 때 한 번 실행된다.
+{% endcomment %}
+
+{% block title %}글 목록{% endblock %}
+
+{% block content %}
+<table>
+  <thead>
+    <tr>
+      <th class="number">번호</th>
+      <th>제목</th>
+      <th>작성자</th>
+      <th class="date">작성일</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for post in posts %}
+    <tr>
+      <td class="number">{{ post.id }}</td>
+      {# post.id를 상세 주소의 <int:post_id> 자리에 넣는다. 결과는 /posts/1/ 같은 주소. #}
+      <td><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></td>
+      <td>{{ post.author }}</td>
+      <td class="date">{{ post.created_at|date:"Y-m-d H:i" }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4">등록된 글이 없습니다.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "posts/base.html" %}
+{% comment %}
+삭제 확인. views.post_delete가 지울 post 한 건을 넘긴다.
+
+이 화면을 여는 것만으로는 글이 지워지지 않는다.
+method="post"인 폼의 삭제 버튼을 눌러야 views.py의 post.delete()가 실행된다.
+취소는 상세 화면으로 돌아가는 링크다.
+{% endcomment %}
+
+{% block title %}글 삭제{% endblock %}
+
+{% block content %}
+<h2>글을 삭제할까요?</h2>
+<p class="meta">{{ post.title }}</p>
+<p>삭제한 글은 되돌릴 수 없습니다.</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">삭제</button>
+</form>
+<p class="actions"><a href="{% url 'post_detail' post.id %}">취소</a></p>
+{% endblock %}
